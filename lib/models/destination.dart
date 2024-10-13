@@ -10,4 +10,10 @@ class Destination {
       link: json['link'] ?? '',
     );
   }
+
+@override
+  String toString() {
+    return title;
+  }
+
 }

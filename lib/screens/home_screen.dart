@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:s2s_radionica/custom_widgets/custom_card.dart';
 import 'package:s2s_radionica/custom_widgets/custom_navbar.dart';
 import 'package:s2s_radionica/models/destination.dart';
+import 'package:s2s_radionica/services/destination_service.dart';
+import 'package:s2s_radionica/utils/api_handler.dart';
 import 'package:s2s_radionica/utils/global_colors.dart';
 
 class Home extends StatefulWidget {
@@ -13,13 +15,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Destination> destinations = [];
+  List<Destination> destinations = [];
 
   Future<void> fetchDestinationsFromSerpapi() async {
+    DestinationService service = DestinationService(api: BaseApi.api);
+    List<Destination> fetched = await service.fetchDestinations();
     
+    setState(() {
+      destinations = fetched;
+    });
   }
-  
-@override
+
+  @override
   void initState() {
     fetchDestinationsFromSerpapi();
     super.initState();
@@ -29,36 +36,37 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(padding: const EdgeInsets.symmetric(vertical: 15),
-        child: Center(
-          child: Column(
-            children: [
-              AutoSizeText(
-                'Explore the world',
-                minFontSize: 10,
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: GlobalColors.black,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          child: Center(
+            child: Column(
+              children: [
+                AutoSizeText(
+                  'Explore the world',
+                  minFontSize: 10,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: GlobalColors.black,
+                  ),
                 ),
-              ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: destinations.length,
-                itemBuilder: (context, index) {
-                  final destination = destinations[index];
-                  return CustomCard(title: destination.title, imageUrl: destination.link);
-                },
-
-              )
-            ],
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: destinations.length,
+                  itemBuilder: (context, index) {
+                    final destination = destinations[index];
+                    return CustomCard(
+                        title: destination.title, imageUrl: destination.link);
+                  },
+                )
+              ],
+            ),
           ),
         ),
-        ),
       ),
-      bottomNavigationBar: Navbar(currentIndex: 0),
+      bottomNavigationBar: const Navbar(currentIndex: 0),
     );
   }
 }
