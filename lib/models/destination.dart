@@ -7,7 +7,7 @@ class Destination {
   factory Destination.fromJson(Map<String, dynamic> json) {
     return Destination(
       title: json['title'] ?? '',
-      link: json['link'] ?? '',
+      link: json['thumbnail'] ?? '',
     );
   }
 
