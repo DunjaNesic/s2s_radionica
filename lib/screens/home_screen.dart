@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:s2s_radionica/custom_widgets/custom_card.dart';
+import 'package:s2s_radionica/custom_widgets/custom_navbar.dart';
 import 'package:s2s_radionica/utils/global_colors.dart';
 
 class Home extends StatefulWidget {
@@ -78,7 +79,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: destinations.length,
                 itemBuilder: (context, index) {
@@ -92,6 +93,7 @@ class _HomeState extends State<Home> {
         ),
         ),
       ),
+      bottomNavigationBar: Navbar(currentIndex: 0),
     );
   }
 }
